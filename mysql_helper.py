@@ -19,6 +19,12 @@ def get_data_from_mysql(cursor, table_name):
 
 
 def update_mysql_data(cursor, table_name, data):
-    cursor.execute(f"DELETE FROM {table_name}")
+    """
+    Update the MySQL table with the data from the Google Sheet.
+    This clears the MySQL table and inserts new data based on the provided DataFrame.
+    """
+    cursor.execute(f"DELETE FROM {table_name}")  # Clear existing data
+
+    # Insert updated data into MySQL
     for row in data.itertuples(index=False):
         cursor.execute(f"INSERT INTO {table_name} VALUES {tuple(row)}")
