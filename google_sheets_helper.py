@@ -28,19 +28,22 @@ def get_data_from_sheet(worksheet):
     return pd.DataFrame(data[1:], columns=data[0])
 
 
-def update_sheet_data(worksheet, new_data):
-    """Update only changed rows in Google Sheets."""
+def update_sheet_data_in_batches(worksheet, new_data, batch_size=100):
+    """Update only changed rows in Google Sheets in batches."""
     current_data = get_data_from_sheet(worksheet)
 
-    # Convert all Timestamp columns to strings
-    new_data = new_data.applymap(lambda x: str(
-        x) if isinstance(x, pd.Timestamp) else x)
-    current_data = current_data.applymap(
-        lambda x: str(x) if isinstance(x, pd.Timestamp) else x)
+    # Break new data into chunks for processing in batches
+    new_data_chunks = process_data_in_batches(new_data, batch_size)
 
-    # Update only rows that are different
-    for idx, row in new_data.iterrows():
-        if idx >= len(current_data) or not row.equals(current_data.iloc[idx]):
-            # Adjust the column range as needed
-            range_to_update = f'A{idx+2}:E{idx+2}'
-            worksheet.update(range_to_update, [row.values.tolist()])
+    for chunk in new_data_chunks:
+        for idx, row in chunk.iterrows():
+            if idx >= len(current_data) or not row.equals(current_data.iloc[idx]):
+                # Adjust the column range as needed
+                range_to_update = f'A{idx+2}:E{idx+2}'
+                worksheet.update(range_to_update, [row.values.tolist()])
+
+
+def process_data_in_batches(data, batch_size=100):
+    """Helper function to split data into batches."""
+    for i in range(0, len(data), batch_size):
+        yield data[i:i + batch_size]
