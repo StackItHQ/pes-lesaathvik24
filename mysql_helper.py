@@ -21,16 +21,21 @@ def get_data_from_mysql(cursor, table_name):
 
 
 def update_mysql_data_in_batches(cursor, table_name, data, batch_size=100):
-    """Update the MySQL table with data from Google Sheets in batches."""
-    cursor.execute(f"DELETE FROM {table_name}")  # Clear existing data
-
-    # Break new data into chunks for processing in batches
+    """Update the MySQL table with data from Google Sheets in batches, only updating changed rows."""
     data_chunks = process_data_in_batches(data, batch_size)
 
     for chunk in data_chunks:
-        insert_query = f"INSERT INTO {table_name} VALUES ({','.join(['%s'] * len(data.columns))})"
-        cursor.executemany(insert_query, [tuple(row)
-                           for row in chunk.itertuples(index=False)])
+        for row in chunk.itertuples(index=False):
+            update_query = f"REPLACE INTO {table_name} VALUES ({','.join(['%s'] * len(data.columns))})"
+            cursor.execute(update_query, row)
+
+
+def delete_rows_in_mysql(cursor, table_name, deleted_rows):
+    """Delete rows in MySQL based on deleted rows in Google Sheets."""
+    for index, row in deleted_rows.iterrows():
+        # Assuming 'id' is the primary key
+        delete_query = f"DELETE FROM {table_name} WHERE id = %s"
+        cursor.execute(delete_query, (row['id'],))
 
 
 def process_data_in_batches(data, batch_size=100):
