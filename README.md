@@ -48,7 +48,7 @@ We have a checklist at the bottom of this README file, which you should update a
 - [x] My code's working just fine! 🥳
 - [ ] I have recorded a video showing it working and embedded it in the README ▶️
 - [x] I have tested all the normal working cases 😎
-- [ ] I have even solved some edge cases (brownie points) 💪
+- [x] I have even solved some edge cases (brownie points) 💪
 - [x] I added my very planned-out approach to the problem at the end of this README 📜
 
 ## Got Questions❓
@@ -64,3 +64,11 @@ My approach addresses the problem of ensuring consistency with the data within t
 It makes this possible to ensure real time synchronization since differences in the data can be detected. For instance, it involves the comparison of the current status of the Google Sheet with the data, existing in the MySQL database with a defined frequency of 5 seconds. Here, if there is any change, the system selects the new one and updates the corresponding platform, meaning that it supports CRUD operations, that include creation, reading, updating and deletion. This would for instance make it possible for it to not only bring new data into the two platforms but also data that has been updated or erased on the other platform.
 One of the main characteristics that can be identified is the use of the pause mechanism which can be initiated by making a change in the Google Sheet, for example, changing the cell value. This means that the user has control over when to perform sync and how to do it, which also prevents overwriting at such times.
 This solution replaces a process that is usually done manually and which is likely to produce wrong results as well as inconsistent results between the Google Sheets and MySQL database. Being capable of real-time data synchronization, and ensuring the servers’ capability to process massive amounts of data, the solution achieves the purpose of this project: providing the means for data interchange between these platforms to be smooth, fast, and stable.
+For scalability I implemented batch processing, which divides large datasets into smaller chunks for processing, rather than handling the entire dataset at once. This minimizes memory usage and reduces the risk of overwhelming Google Sheets API limits or MySQL resources during high-frequency updates. Additionally, batch updates and inserts optimize performance, allowing only the necessary data to be synchronized, which decreases the load on both systems. These enhancements ensure efficient handling of large datasets and frequent updates, preventing performance degradation while maintaining synchronization integrity between Google Sheets and MySQL.
+
+
+
+
+
+
+
