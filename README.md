@@ -45,11 +45,11 @@ Once you're done, make sure you **record a video** showing your project working.
 
 We have a checklist at the bottom of this README file, which you should update as your progress with your assignment. It will help us evaluate your project.
 
-- [ ] My code's working just fine! 🥳
+- [x] My code's working just fine! 🥳
 - [ ] I have recorded a video showing it working and embedded it in the README ▶️
-- [ ] I have tested all the normal working cases 😎
+- [x] I have tested all the normal working cases 😎
 - [ ] I have even solved some edge cases (brownie points) 💪
-- [ ] I added my very planned-out approach to the problem at the end of this README 📜
+- [x] I added my very planned-out approach to the problem at the end of this README 📜
 
 ## Got Questions❓
 Feel free to check the discussions tab, you might get some help there. Check out that tab before reaching out to us. Also, did you know, the internet is a great place to explore? 😛
@@ -60,3 +60,7 @@ All the best ✨.
 
 ## Developer's Section
 *Add your video here, and your approach to the problem (optional). Leave some comments for us here if you want, we will be reading this :)*
+My approach addresses the problem of ensuring consistency with the data within these two different contexts through the availability of a mechanism for bi-directional synchronization. The application watches the updates in both Google Sheets and the database simultaneously so updates made in one do not have to be entered manually in the other.
+It makes this possible to ensure real time synchronization since differences in the data can be detected. For instance, it involves the comparison of the current status of the Google Sheet with the data, existing in the MySQL database with a defined frequency of 5 seconds. Here, if there is any change, the system selects the new one and updates the corresponding platform, meaning that it supports CRUD operations, that include creation, reading, updating and deletion. This would for instance make it possible for it to not only bring new data into the two platforms but also data that has been updated or erased on the other platform.
+One of the main characteristics that can be identified is the use of the pause mechanism which can be initiated by making a change in the Google Sheet, for example, changing the cell value. This means that the user has control over when to perform sync and how to do it, which also prevents overwriting at such times.
+This solution replaces a process that is usually done manually and which is likely to produce wrong results as well as inconsistent results between the Google Sheets and MySQL database. Being capable of real-time data synchronization, and ensuring the servers’ capability to process massive amounts of data, the solution achieves the purpose of this project: providing the means for data interchange between these platforms to be smooth, fast, and stable.
